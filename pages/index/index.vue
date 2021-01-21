@@ -1,9 +1,6 @@
 <template>
 	<view class="content">
-		<image v-if="show" class="logo animated bounceIn fast" src="/static/logo.png"></image>
-		<view class="text-area">
-			<text class="title">{{title}}</text>
-		</view>
+		<button @click="play">播放</button>
 	</view>
 </template>
 
@@ -11,15 +8,21 @@
 	export default {
 		data() {
 			return {
-				title: 'Hello',
-				show:false
+
 			}
 		},
 		onLoad() {
 			this.show = true
 		},
 		methods: {
-
+			play(){
+				const innerAudioContext = uni.createInnerAudioContext();
+				innerAudioContext.autoplay = true;
+				innerAudioContext.src = 'http://link.hhtjim.com/163/27678655.mp3';
+				innerAudioContext.onPlay(() => {
+				  console.log('开始播放');
+				});
+			}
 		}
 	}
 </script>

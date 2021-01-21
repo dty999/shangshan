@@ -1,25 +1,17 @@
 <template>
 	<view>
-		<!-- 		<uni-card :title="remember.itemName" :thumbnail="remember.image" :extra="remember.extra" :note="remember.note">
-			<view class="card_content">
-				<text space="nbsp">{{ remember.msg }}</text>
-				<view>
-					<image :src="remember.failImg" class="logoBtn"></image>
-					<image :src="remember.setImg" class="logoBtn"></image>
-				</view>
-			</view>
-		</uni-card> -->
 		<uni-card v-for="(item, index) in rememberList" :title="item.itemName" :extra="item.extra === '' ? '正计时' : `倒计时${item.extra}天`" :note="item.note">
 			<view class="card_content">
 				<text space="nbsp">{{ item | TianShu }}</text>
 				<view>
-					<image :src="successImg" class="logoBtn"></image>
-					<image :src="failImg" class="logoBtn" @click="fail(index)"></image>
+					<image :src="'../../static/remember/kaixin.png'" class="logoBtn"></image>
+					<image :src="'../../static/remember/bukaixin.png'" class="logoBtn" @click="fail(index)"></image>
+					<image :src="'../../static/remember/shanchu.png'" class="logoBtn" @click="deleteItem(index)"></image>
 				</view>
 			</view>
 		</uni-card>
-		<image src="../../static/remember/add.png" class="add" @click="add"></image>
-		<text>打卡</text>
+		<image :src="'../../static/remember/add.png'" class="add" @click="add"></image>
+		<uni-popup ref="popup" type="center"><uni-popup-message type="success" :message="popupMsg" :duration="2000"></uni-popup-message></uni-popup>
 	</view>
 </template>
 
@@ -38,8 +30,8 @@ export default {
 	data() {
 		return {
 			rememberList: null,
-			failImg: '../../static/remember/不开心.png',
-			successImg: '../../static/remember/开心.png',
+			failImg: '../../static/remember/bukaixin.png',
+			successImg: '../../static/remember/kaixin.png',
 			remember: {
 				itemName: '读书',
 				msg: '5 天',
@@ -49,23 +41,29 @@ export default {
 				setImg: '../../static/remember/设置.png',
 				extra: '正计时',
 				note: '阅读是和古人对话'
-			}
+			},
+			popupMsg: '保存成功'
 		};
 	},
 	filters: {
 		TianShu: function(item) {
 			const newDate = new Date();
-			const time = newDate.getTime()-item.thisTime
-			let day = 0
-			if(time<1000){
-				day = 0
-			}else{
+			const time = newDate.getTime() - item.thisTime;
+			let day = 0;
+			let min = 0;
+			if (time < 1000) {
+				day = 0;
+			} else {
 				day = parseInt(time / (1000 * 60 * 60 * 24));
+				min = parseInt(time / (1000 * 60));
 			}
 			if (item.extra === '') {
 				return `已坚持${day}天`;
 			} else {
-				return `还剩${item.extra-day}天`;
+				if (item.extra - day <= 0) {
+					return `恭喜你!已经完成任务!`;
+				}
+				return `还剩${item.extra - day}天`;
 			}
 		}
 	},
@@ -76,6 +74,10 @@ export default {
 		this.getRememberList();
 	},
 	methods: {
+		deleteItem(index) {
+			this.rememberList.splice(index, 1);
+			this.saveRememberList('删除成功');
+		},
 		add() {
 			// 路径不用谢pages
 			uni.navigateTo({
@@ -95,14 +97,21 @@ export default {
 		},
 		fail(index) {
 			// console.log(index);
-			const curTime = new Date()
-			const item = this.rememberList[index]
-			item.thisTime = curTime.getTime()
+			const curTime = new Date();
+			const item = this.rememberList[index];
+			item.thisTime = curTime.getTime();
 			this.rememberList[index].arr.push(item.thisTime);
-			// console.log(this.rememberList[index]);
+			this.saveRememberList('继续努力');
+		},
+		saveRememberList(msg) {
 			uni.setStorage({
 				key: 'rememberList',
-				data: JSON.stringify(this.rememberList)
+				data: JSON.stringify(this.rememberList),
+				success: () => {
+					console.log('success');
+					this.popupMsg = msg;
+					this.$refs.popup.open();
+				}
 			});
 		}
 	}
