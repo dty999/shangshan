@@ -51,14 +51,16 @@ export default {
 			const time = newDate.getTime() - item.thisTime;
 			let day = 0;
 			let min = 0;
+			let hour = 0;
 			if (time < 1000) {
 				day = 0;
 			} else {
 				day = parseInt(time / (1000 * 60 * 60 * 24));
-				min = parseInt(time / (1000 * 60));
+				hour = parseInt(time % (1000 * 60 * 60 * 24)/(1000 * 60 * 60))
+				min = parseInt((time % (1000 * 60 * 60 * 24)%(1000 * 60 * 60))/(1000*60));
 			}
 			if (item.extra === '') {
-				return `已坚持${day}天`;
+				return `已坚持${day}天${hour}时${min}分`;
 			} else {
 				if (item.extra - day <= 0) {
 					return `恭喜你!已经完成任务!`;
@@ -80,6 +82,7 @@ export default {
 		},
 		add() {
 			// 路径不用谢pages
+			console.log('添加按钮按下');
 			uni.navigateTo({
 				url: `../Remember/AddItem/AddItem`
 			});
@@ -122,7 +125,7 @@ export default {
 .card_content {
 	display: flex;
 	justify-content: space-between;
-	font-size: 27px;
+	font-size: 19px;
 	align-items: center;
 	/* text-align: center; */
 	color: #09bb07;
