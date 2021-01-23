@@ -1,17 +1,10 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-	{
-		"path": "pages/Home/Home",
-		"style": {
-			"navigationBarTitleText": "主页",
-			"enablePullDownRefresh": false
-		}
-	
-	},
+
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "小助手"
+				"navigationBarTitleText": "音乐"
 				// "backgroundColor":"#2ADD9C"
 			}
 		},  {
@@ -21,8 +14,15 @@
 				"enablePullDownRefresh": false
 			}
 
+		},	{
+		"path": "pages/Home/Home",
+		"style": {
+			"navigationBarTitleText": "金鸡独立",
+			"enablePullDownRefresh": false
 		}
-	    ,{
+	
+	},
+	    {
             "path" : "pages/Remember/AddItem/AddItem",
             "style" :                                                                                    
             {
@@ -49,8 +49,8 @@
 			"selectedIconPath": "static/icons/sleepActive.png"
 		}, {
 			"pagePath": "pages/Home/Home",
-			"iconPath": "static/icons/home.png",
-			"selectedIconPath": "static/icons/homeActive.png"
+			"iconPath": "static/icons/ji.png",
+			"selectedIconPath": "static/icons/jiActive.png"
 
 		}, {
 			"pagePath": "pages/Remember/Remember",

@@ -36,9 +36,9 @@ export default {
 				itemName: '读书',
 				msg: '5 天',
 				startTime: new Date(),
-				image: '../../static/remember/读书.png',
-				failImg: '../../static/remember/失败.png',
-				setImg: '../../static/remember/设置.png',
+				image: '../../static/remember/dushu.png',
+				failImg: '../../static/remember/bukaixin.png',
+				setImg: '../../static/remember/shezhi.png',
 				extra: '正计时',
 				note: '阅读是和古人对话'
 			},
